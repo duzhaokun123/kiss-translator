@@ -16,7 +16,7 @@ jobs:
         version: latest
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: 'lts/*'
         cache: 'pnpm'
@@ -32,4 +32,11 @@ jobs:
       with:
         name: kiss-translator-build
         path: build/*.zip
+        retention-days: 30
+
+    - name: Upload web frontend
+      uses: actions/upload-artifact@v7
+      with:
+        name: kiss-translator-web
+        path: build/web
 
