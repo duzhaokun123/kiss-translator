@@ -5,6 +5,7 @@ import {
   ProviderType,
   ToggleType,
 } from "./index";
+import PQueue from "p-queue";
 
 type BaseProviderProps = {
   name: string;
@@ -40,12 +41,19 @@ const DEFAULT_PROPS: BaseProviderProps = {
   placeholderTagFormatType: PlaceholderTagFormatType.compact,
 };
 
-abstract class BaseProvider<Props> {
+abstract class BaseProvider<Props extends BaseProviderProps> {
   abstract type: ProviderType;
   protected props: Props;
+  queue: PQueue
 
   constructor(props: Props) {
     this.props = props;
+    this.queue = new PQueue({
+      concurrency: props.concurrencyCount,
+      intervalCap: props.concurrencyCount,
+      interval: props.concurrencyInterval,
+      timeout: props.timeout * 1000,
+    })
   }
 }
 

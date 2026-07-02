@@ -1,13 +1,6 @@
-jest.mock("query-string", () => ({
-  stringify: (obj) => new URLSearchParams(obj).toString(),
-}));
-
-jest.mock("@streamparser/json", () => ({
-  JSONParser: jest.fn(),
-}));
-
-jest.mock("webextension-polyfill", () => ({}));
-
+/**
+ * @jest-environment node
+ */
 import Google1, { DEFAULT_PROPS } from "./Google1";
 
 describe("Google1", () => {

@@ -9,7 +9,7 @@ import {
   TranslateResult,
 } from "./interfaces";
 import { genGoogle } from "../../apis/trans";
-import { fetchData } from "../fetch";
+import fetch from "../fetchCompat"
 import { apiGoogleLangdetect } from "../../apis";
 
 type Google1Props = BaseProviderProps & {
@@ -54,21 +54,20 @@ class Google1
       url: GOOGLE1_URL,
       key: this.props.key,
     });
-    const resp: Google1Response = await fetchData(url, headers, {
-      useCache: false,
-      usePool: true,
-      fetchInterval: this.props.concurrencyInterval,
-      fetchLimit: this.props.concurrencyCount,
-      // @ts-ignore
-      httpTimeout: this.props.timeout,
-    });
-    if (!resp) {
-      throw new Error("translate got empty response");
-    }
 
+    const resp = await this.queue.add(async () =>
+      fetch(url, {
+        headers: headers,
+        method: method
+      })
+    );
+    if (!resp.ok) {
+      throw new Error(`http error ${resp.status} ${resp.statusText}`);
+    }
+    const json: Google1Response = await resp.json();
     return {
-      translate: resp.sentences.map((item) => item.trans).join(" "),
-      src: resp.src,
+      translate: json.sentences.map((item) => item.trans).join(" "),
+      src: json.src,
     };
   }
 

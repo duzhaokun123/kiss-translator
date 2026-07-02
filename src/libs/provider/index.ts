@@ -1,20 +1,24 @@
-enum ProviderType {
-  google1 = "google1",
-}
+const ProviderType = {
+  google1: "google1",
+  google2: "google2",
+} as const;
+type ProviderType = (typeof ProviderType)[keyof typeof ProviderType];
 
-enum ToggleType {
-  scroll = "scroll",
-  all = "all",
-}
+const ToggleType = {
+  scroll: "scroll",
+  all: "all",
+} as const;
+type ToggleType = (typeof ToggleType)[keyof typeof ToggleType];
 
 type PlaceholderSting = "{ }" | "{{ }}" | "[ ]" | "[[ ]]";
 
 type PlaceholderTag = "<i>" | "<a>" | "<b>" | "<x>" | "<span>";
 
-enum PlaceholderTagFormatType {
-  compact = "compact",
-  attribute = "attribute",
-}
+const PlaceholderTagFormatType = {
+  compact: "compact",
+  attribute: "attribute",
+} as const;
+type PlaceholderTagFormatType = (typeof PlaceholderTagFormatType)[keyof typeof PlaceholderTagFormatType];
 
 type LanguageCode = string;
 

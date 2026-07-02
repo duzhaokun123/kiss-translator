@@ -470,7 +470,16 @@ export const genGoogle = ({ texts, from, to, url, key }) => {
   return { url, headers, method: "GET" };
 };
 
-const genGoogle2 = ({ texts, from, to, url, key }) => {
+/**
+ * @param {Object} params
+ * @param {string[]} params.texts
+ * @param {string} params.from
+ * @param {string} params.to
+ * @param {string} params.url
+ * @param {string} [params.key]
+ * @returns {{ url: string, headers: Record<string, string>, method: string }}
+ */
+export const genGoogle2 = ({ texts, from, to, url, key }) => {
   const body = [[texts, from, to], "wt_lib"];
   const headers = {
     "Content-Type": "application/json+protobuf",
