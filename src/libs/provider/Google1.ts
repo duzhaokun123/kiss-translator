@@ -8,9 +8,9 @@ import {
   SingleStingsTranslate,
   TranslateResult,
 } from "./interfaces";
-import { genGoogle } from "../../apis/trans";
-import fetch from "../fetchCompat"
+import fetch from "../fetchCompat";
 import { apiGoogleLangdetect } from "../../apis";
+import queryString from "query-string";
 
 type Google1Props = BaseProviderProps & {
   key: string | null;
@@ -47,18 +47,28 @@ class Google1
     dst: LanguageCode
   ): Promise<TranslateResult> {
     // FIXME 语言代码映射
-    const { url, headers, method } = genGoogle({
-      texts: [text],
-      from: src,
-      to: dst,
+    const url = queryString.stringifyUrl({
       url: GOOGLE1_URL,
-      key: this.props.key,
+      query: {
+        client: "gtx",
+        dt: "t",
+        dj: 1,
+        ie: "UTF-8",
+        sl: src,
+        tl: dst,
+        q: text,
+      },
     });
-
+    const headers = {
+      "Content-type": "application/json",
+    };
+    if (this.props.key) {
+      headers["Authorization"] = `Bearer ${this.props.key}`;
+    }
     const resp = await this.queue.add(async () =>
       fetch(url, {
         headers: headers,
-        method: method
+        method: "GET",
       })
     );
     if (!resp.ok) {
