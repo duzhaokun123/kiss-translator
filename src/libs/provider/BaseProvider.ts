@@ -9,6 +9,7 @@ import {
 type BaseProviderProps = {
   name: string;
   id: string;
+  enable: boolean;
   toggleType: ToggleType;
   /**
    * 毫秒
@@ -28,6 +29,7 @@ type BaseProviderProps = {
 const DEFAULT_PROPS: BaseProviderProps = {
   name: undefined,
   id: undefined,
+  enable: true,
   toggleType: ToggleType.scroll,
   toggleDelay: 200,
   concurrencyCount: 10,
