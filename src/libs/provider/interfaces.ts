@@ -1,6 +1,6 @@
 import { LanguageCode } from "./index";
 
-type TranslateResult = { translate: string; src: LanguageCode };
+type TranslateResult = { translate: string; src: LanguageCode | null };
 
 interface SingleStingsTranslate {
   singleStringTranslate(

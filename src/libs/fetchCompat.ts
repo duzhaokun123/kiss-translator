@@ -7,7 +7,11 @@ type RequestInitCompat = RequestInit & {
   timeout?: number;
 };
 
-function fetch(url: string, options: RequestInitCompat): Promise<Response> {
+function fetch(
+  url: string | URL,
+  options: RequestInitCompat
+): Promise<Response> {
+  if (url instanceof URL) url = url.toString();
   return fetchPatcher(url, options);
 }
 
