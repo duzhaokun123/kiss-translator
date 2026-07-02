@@ -17,4 +17,9 @@ describe("Google1", () => {
     const result = await google1.singleStringTranslate("你好", "zh", "en");
     expect(result).toEqual({src: "zh-CN", translate: "Hello"})
   });
+
+  test("language detection", async () => {
+    const result = await google1.languageDetection("English")
+    expect(result).toEqual("en")
+  })
 });

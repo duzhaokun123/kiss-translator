@@ -18,13 +18,13 @@ interface MultiStringTranslate {
   ): Promise<TranslateResult[]>;
 }
 
-interface LanguageIdentification {
-  languageIdentification(text: string): Promise<LanguageCode>;
+interface LanguageDetection {
+  languageDetection(text: string): Promise<LanguageCode>;
 }
 
 export type {
   TranslateResult,
   SingleStingsTranslate,
   MultiStringTranslate,
-  LanguageIdentification,
+  LanguageDetection,
 };

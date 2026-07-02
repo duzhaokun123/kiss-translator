@@ -4,11 +4,13 @@ import BaseProvider, {
 } from "./BaseProvider";
 import { LanguageCode, ProviderType } from "./index";
 import {
+  LanguageDetection,
   SingleStingsTranslate,
   TranslateResult,
 } from "./interfaces";
 import { genGoogle } from "../../apis/trans";
 import { fetchData } from "../fetch";
+import { apiGoogleLangdetect } from "../../apis";
 
 type Google1Props = BaseProviderProps & {
   key: string | null;
@@ -35,7 +37,7 @@ type Google1Response = {
 
 class Google1
   extends BaseProvider<Google1Props>
-  implements SingleStingsTranslate
+  implements SingleStingsTranslate, LanguageDetection
 {
   type = ProviderType.google1;
 
@@ -68,6 +70,10 @@ class Google1
       translate: resp.sentences.map((item) => item.trans).join(" "),
       src: resp.src,
     };
+  }
+
+  languageDetection(text: string): Promise<LanguageCode> {
+    return apiGoogleLangdetect(text);
   }
 }
 
