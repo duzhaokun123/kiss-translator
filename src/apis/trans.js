@@ -440,7 +440,16 @@ const injectThinking = (body, { apiType, thinkingMode, thinkingEffort }) => {
   }
 };
 
-const genGoogle = ({ texts, from, to, url, key }) => {
+/**
+ * @param {Object} params
+ * @param {string[]} params.texts
+ * @param {string} params.from
+ * @param {string} params.to
+ * @param {string} params.url
+ * @param {string} [params.key]
+ * @returns {{ url: string, headers: Record<string, string>, method: string }}
+ */
+export const genGoogle = ({ texts, from, to, url, key }) => {
   const params = queryString.stringify({
     client: "gtx",
     dt: "t",
