@@ -8,21 +8,200 @@ import Menu from "@mui/material/Menu";
 import React, { useCallback, useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { OPT_ALL_PROVIDER_PRESET } from "../../config/provider";
-import { ProviderItem, useProviderItem, useProviderList } from "../../hooks/Provider";
+import {
+  ProviderItem,
+  useProviderItem,
+  useProviderList,
+} from "../../hooks/Provider";
 import List from "@mui/material/List";
 import { ApiListItem, ApiProviderIcon } from "./Apis";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CodeField from "./CodeField";
 import { useConfirm } from "../../hooks/Confirm";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { providerFactor } from "../../libs/provider";
+import {
+  LanguageDetection,
+  MultiStringTranslate,
+  SingleStingsTranslate,
+} from "../../libs/provider/interfaces";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
-function ProviderFields({providerId, deleteProvider, copyProvider}) {
+type TestResult = {
+  label: string;
+  success: boolean;
+  content: React.ReactNode;
+};
+
+function TestButton({ provider }: { provider: ProviderItem }) {
   const i18n = useI18n();
-  const { provider, updateProvider } = useProviderItem(providerId)
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [results, setResults] = useState<TestResult[]>([]);
+
+  const handleTest = async () => {
+    setOpen(true);
+    setResults([]);
+    try {
+      setLoading(true);
+      const testProvider = providerFactor(provider);
+      const testResults: TestResult[] = [];
+      const text = "The quick brown fox jumps over the lazy dog.";
+      const texts = ["The quick brown fox.", "Jumps over the lazy dog."];
+
+      if ("singleStringTranslate" in testProvider) {
+        try {
+          const translate = await (
+            testProvider as SingleStingsTranslate
+          ).singleStringTranslate(text, "en", "zh-CN");
+          testResults.push({
+            label: "singleStringTranslate",
+            success: Boolean(translate),
+            content: translate ? (
+              <Stack spacing={0.5}>
+                <Typography variant="body2">{text}</Typography>
+                <Typography variant="body2">{translate.translate}</Typography>
+              </Stack>
+            ) : (
+              <pre>empty response</pre>
+            ),
+          });
+        } catch (e) {
+          testResults.push({
+            label: "singleStringTranslate",
+            success: false,
+            content: <pre>{e.message || e.toString()}</pre>,
+          });
+        }
+      }
+
+      if ("multiStringTranslate" in testProvider) {
+        try {
+          const translates = await (
+            testProvider as MultiStringTranslate
+          ).multiStringTranslate(texts, "en", "zh-CN");
+          testResults.push({
+            label: "multiStringTranslate",
+            success: Boolean(translates?.length),
+            content: translates?.length ? (
+              <Stack spacing={0.5}>
+                {texts.map((item, index) => (
+                  <Typography variant="body2" key={item}>
+                    {item} - {translates[index]?.translate}
+                  </Typography>
+                ))}
+              </Stack>
+            ) : (
+              <pre>empty response</pre>
+            ),
+          });
+        } catch (e) {
+          testResults.push({
+            label: "multiStringTranslate",
+            success: false,
+            content: <pre>{e.message || e.toString()}</pre>,
+          });
+        }
+      }
+
+      if ("languageDetection" in testProvider) {
+        try {
+          const language = await (
+            testProvider as LanguageDetection
+          ).languageDetection(text);
+          testResults.push({
+            label: "languageDetection",
+            success: Boolean(language),
+            content: language ? (
+              <Typography variant="body2">{text} - {language}</Typography>
+            ) : (
+              <pre>empty response</pre>
+            ),
+          });
+        } catch (e) {
+          testResults.push({
+            label: "languageDetection",
+            success: false,
+            content: <pre>{e.message || e.toString()}</pre>,
+          });
+        }
+      }
+
+      if (!testResults.length) {
+        testResults.push({
+          label: "features",
+          success: false,
+          content: (
+            <Typography variant="body2">No testable features.</Typography>
+          ),
+        });
+      }
+      setResults(testResults);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <LoadingButton
+        size="small"
+        variant="outlined"
+        loading={loading}
+        onClick={handleTest}
+      >
+        {i18n("test")}
+      </LoadingButton>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>{i18n("test")}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2}>
+            {loading && <Typography variant="body2">Testing...</Typography>}
+            {results.map((result) => (
+              <Stack key={result.label} spacing={1}>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Typography variant="subtitle2">{result.label}</Typography>
+                  <Typography
+                    variant="caption"
+                    color={result.success ? "success.main" : "error.main"}
+                  >
+                    {result.success
+                      ? i18n("test_success")
+                      : i18n("test_failed")}
+                  </Typography>
+                </Stack>
+                {result.content}
+                <Divider />
+              </Stack>
+            ))}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>{i18n("cancel")}</Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
+function ProviderFields({ providerId, deleteProvider, copyProvider }) {
+  const i18n = useI18n();
+  const { provider, updateProvider } = useProviderItem(providerId);
   const confirm = useConfirm();
 
   useEffect(() => {
-    setEditingJson(JSON.stringify(provider, null, 2))
-  }, [provider])
+    setEditingJson(JSON.stringify(provider, null, 2));
+  }, [provider]);
 
   const [editingJson, setEditingJson] = useState("");
 
@@ -44,7 +223,7 @@ function ProviderFields({providerId, deleteProvider, copyProvider}) {
     } catch (error) {
       console.error("Invalid JSON:", error);
     }
-  }
+  };
 
   return (
     <Stack direction="column" spacing={2}>
@@ -59,9 +238,14 @@ function ProviderFields({providerId, deleteProvider, copyProvider}) {
         <Button size="small" variant="contained" onClick={handleSave}>
           {i18n("save")}
         </Button>
-        <Button size="small" variant="outlined" onClick={() => copyProvider(provider)}>
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={() => copyProvider(provider)}
+        >
           {i18n("copy")}
         </Button>
+        <TestButton provider={provider} />
         <Button
           size="small"
           variant="outlined"
@@ -88,16 +272,8 @@ export default function Providers() {
   const confirm = useConfirm();
 
   const [selectedProviderId, setSelectedProviderId] = React.useState("");
-  const [checkedProviderIds, setCheckedProviderIds] = useState([]);
   const [draggingProviderId, setDraggingProviderId] = useState("");
   const [dragOverProviderId, setDragOverProviderId] = useState("");
-
-  const handleCheckProvider = useCallback((event, id) => {
-    event.stopPropagation();
-    setCheckedProviderIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  }, []);
 
   const handleDragStart = useCallback((event, id) => {
     event.dataTransfer.effectAllowed = "move";
@@ -243,13 +419,13 @@ export default function Providers() {
                     apiName: provider.name,
                     isDisabled: !provider.enable,
                   }}
-                  selected={false}
+                  selected={provider.id === selectedProviderId}
                   bulkMode={false}
-                  checked={provider.id in checkedProviderIds}
+                  checked={false}
                   dragging={provider.id === draggingProviderId}
                   dragOver={provider.id === dragOverProviderId}
                   onSelect={() => setSelectedProviderId(provider.id)}
-                  onCheck={handleCheckProvider}
+                  onCheck={() => {}}
                   onDragStart={(event) => handleDragStart(event, provider.id)}
                   onDragOver={(event) => handleDragOver(event, provider.id)}
                   onDrop={(event) => handleDrop(event, provider.id)}
@@ -274,7 +450,8 @@ export default function Providers() {
               <ProviderFields
                 providerId={selectedProviderId}
                 deleteProvider={deleteProvider}
-                copyProvider={copyProvider} />
+                copyProvider={copyProvider}
+              />
             )}
           </Box>
         </Box>

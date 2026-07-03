@@ -54,9 +54,10 @@ const DEFAULT_PROPS: BaseProviderProps = {
 };
 
 abstract class BaseProvider<Props extends BaseProviderProps> {
-  abstract type: ProviderType;
   protected props: Props;
-  queue: PQueue;
+  protected queue: PQueue;
+
+  abstract type: ProviderType;
 
   constructor(props: Props) {
     this.props = props;
