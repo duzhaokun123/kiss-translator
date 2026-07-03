@@ -1,9 +1,8 @@
-import BaseProvider, {
-  BaseProviderProps,
-  DEFAULT_PROPS as BASE_DEFAULT_PROPS,
-} from "./BaseProvider";
-import { LanguageCode, PlaceholderTagFormatType, ProviderType } from "./index";
-import {
+import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
+import type { BaseProviderProps } from "./BaseProvider";
+import { PlaceholderTagFormatTypeValue, ProviderType } from "./constants";
+import type { LanguageCode } from "./constants";
+import type {
   MultiStringTranslate,
   SingleStingsTranslate,
   TranslateResult,
@@ -14,10 +13,13 @@ type Google2Props = BaseProviderProps & {
   key: string;
 };
 
-const DEFAULT_PROPS: Google2Props = {
-  ...BASE_DEFAULT_PROPS,
+const GOOGLE2_DEFAULT_PROPS: Google2Props = {
+  ...DEFAULT_PROPS,
+  type: ProviderType.google2,
+  label: "Google2",
+  icon: "Google2",
   placeholderTag: "<a>",
-  placeholderTagFormatType: PlaceholderTagFormatType.attribute,
+  placeholderTagFormatType: PlaceholderTagFormatTypeValue.attribute,
   key: "AIzaSyATBXajvzQLTDHEQbcpq0Ihe0vWDHmO520",
 };
 
@@ -45,8 +47,8 @@ class Google2
     src: LanguageCode,
     dst: LanguageCode
   ): Promise<TranslateResult[]> {
-    const url = GOOGLE2_URL
-    const body = [[text, src, dst], "wt_lib"]
+    const url = GOOGLE2_URL;
+    const body = [[text, src, dst], "wt_lib"];
     const headers = {
       "Content-Type": "application/json+protobuf",
       "X-Goog-API-Key": this.props.key,
@@ -57,19 +59,20 @@ class Google2
         method: "POST",
         body: JSON.stringify(body),
       })
-    )
+    );
     if (!resp.ok) {
       throw new Error(`http error ${resp.status} ${resp.statusText}`);
     }
-    const json: [[string]] = await resp.json()
+    const json: [[string]] = await resp.json();
     return json[0].map((item) => {
       return {
         translate: item,
-        src: null
-      }
-    })
+        src: null,
+      };
+    });
   }
 }
 
 export default Google2;
-export { DEFAULT_PROPS };
+export type { Google2Props };
+export { GOOGLE2_DEFAULT_PROPS };

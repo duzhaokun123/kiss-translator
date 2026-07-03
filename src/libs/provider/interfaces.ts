@@ -1,4 +1,4 @@
-import { LanguageCode } from "./index";
+import type { LanguageCode } from "./constants";
 
 type TranslateResult = { translate: string; src: LanguageCode | null };
 

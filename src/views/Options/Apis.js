@@ -158,7 +158,7 @@ function getApiIconSrc(apiType) {
   return `${process.env.PUBLIC_URL || "."}/api/${iconFile}`;
 }
 
-function ApiProviderIcon({ apiType, disabled = false, sx = {} }) {
+export function ApiProviderIcon({ apiType, disabled = false, sx = {} }) {
   const iconSrc = getApiIconSrc(apiType);
 
   return (
@@ -1310,7 +1310,7 @@ function ApiFields({ apiSlug, deleteApi, copyApi, onCollapse }) {
   );
 }
 
-function ApiListItem({
+export function ApiListItem({
   api,
   selected,
   bulkMode,

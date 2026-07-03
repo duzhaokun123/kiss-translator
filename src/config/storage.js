@@ -28,6 +28,7 @@ export const STOKEY_TRANBOX = `${APP_NAME}_tranbox`; // 划词翻译框的最后
 export const STOKEY_SEPARATE_WINDOW = `${APP_NAME}_separate_window`; // 划词翻译独立小窗口的最后边界尺寸(坐标及宽高)缓存键名
 export const STOKEY_RULESCACHE_PREFIX = `${APP_NAME}_rulescache_`; // 网页规则匹配缓存键名前缀
 export const STOKEY_DISABLED_SUB_RULES = `${APP_NAME}_disabled_sub_rules`; // 被用户手动禁用的订阅规则 ID 集合的缓存键名
+export const STOlKEY_PROVIDER = `${APP_NAME}_provider` // 供应商
 
 // --- 翻译 HTTP 请求的缓存配置 ---
 export const CACHE_NAME = `${APP_NAME}_cache`; // 翻译接口响应缓存的 CacheStorage 名称

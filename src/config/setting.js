@@ -246,6 +246,7 @@ export const DEFAULT_SETTING = {
   subrulesList: DEFAULT_SUBRULES_LIST, // 订阅的在线翻译规则列表
   // owSubrule: DEFAULT_OW_RULE, // 覆写订阅规则 (作废)
   transApis: DEFAULT_API_LIST, // 缓存的全部可用翻译 API 配置列表（数组格式）
+  providers: [],
   prompts: [], // 用户自定义提示词；预设提示词由 config/prompt.js 提供，不写入本地配置
   deletedTransApiSlugs: [], // 用户手动删除的默认翻译接口标识
   // mouseKey: OPT_TIMING_PAGESCROLL, // 翻译时机/鼠标悬停翻译(移至rule，作废)

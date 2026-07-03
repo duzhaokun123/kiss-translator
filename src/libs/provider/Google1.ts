@@ -1,9 +1,10 @@
 import BaseProvider, {
-  BaseProviderProps,
-  DEFAULT_PROPS as BASE_DEFAULT_PROPS,
+  DEFAULT_PROPS,
 } from "./BaseProvider";
-import { LanguageCode, ProviderType } from "./index";
-import {
+import type { BaseProviderProps } from "./BaseProvider";
+import { ProviderType } from "./constants";
+import type { LanguageCode } from "./constants";
+import type {
   LanguageDetection,
   SingleStingsTranslate,
   TranslateResult,
@@ -16,8 +17,11 @@ type Google1Props = BaseProviderProps & {
   key: string | null;
 };
 
-const DEFAULT_PROPS: Google1Props = {
-  ...BASE_DEFAULT_PROPS,
+const GOOGLE1_DEFAULT_PROPS: Google1Props = {
+  ...DEFAULT_PROPS,
+  type: ProviderType.google1,
+  label: "Google1",
+  icon: "Google",
   key: null,
 };
 
@@ -87,4 +91,5 @@ class Google1
 }
 
 export default Google1;
-export { DEFAULT_PROPS };
+export type { Google1Props };
+export { GOOGLE1_DEFAULT_PROPS };

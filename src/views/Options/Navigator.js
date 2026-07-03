@@ -60,6 +60,12 @@ export default function Navigator(props) {
       icon: <ApiIcon />,
     },
     {
+      id: "providers_setting",
+      label: i18n("providers_setting", "供应商设置"),
+      url: "/providers",
+      icon: <ApiIcon />,
+    },
+    {
       id: "prompt_management",
       label: i18n("prompt_management", "提示词管理"),
       url: "/prompts",

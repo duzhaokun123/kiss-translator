@@ -1,29 +1,25 @@
-const ProviderType = {
-  google1: "google1",
-  google2: "google2",
-} as const;
-type ProviderType = (typeof ProviderType)[keyof typeof ProviderType];
+import BaseProvider, { BaseProviderProps } from "./BaseProvider";
+import Google1, { Google1Props } from "./Google1";
+import Google2, { Google2Props } from "./Google2";
+import { ProviderType } from "./constants";
+export type {
+  PlaceholderSting,
+  PlaceholderTag,
+  LanguageCode,
+} from "./constants";
 
-const ToggleType = {
-  scroll: "scroll",
-  all: "all",
-} as const;
-type ToggleType = (typeof ToggleType)[keyof typeof ToggleType];
+type ProviderProps = BaseProviderProps | Google1Props | Google2Props;
 
-type PlaceholderSting = "{ }" | "{{ }}" | "[ ]" | "[[ ]]";
+function providerFactor(
+  providerProps: ProviderProps
+): BaseProvider<BaseProviderProps> {
+  switch (providerProps.type) {
+    case ProviderType.google1:
+      return new Google1(providerProps as Google1Props);
+    case ProviderType.google2:
+      return new Google2(providerProps as Google2Props);
+  }
+  return null;
+}
 
-type PlaceholderTag = "<i>" | "<a>" | "<b>" | "<x>" | "<span>";
-
-const PlaceholderTagFormatType = {
-  compact: "compact",
-  attribute: "attribute",
-} as const;
-type PlaceholderTagFormatType = (typeof PlaceholderTagFormatType)[keyof typeof PlaceholderTagFormatType];
-
-type LanguageCode = string;
-
-function providerFactor(type: ProviderType) {}
-
-export { ProviderType, ToggleType, PlaceholderTagFormatType, providerFactor };
-
-export type { PlaceholderSting, PlaceholderTag, LanguageCode };
+export { providerFactor };

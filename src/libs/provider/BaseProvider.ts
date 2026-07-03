@@ -1,16 +1,24 @@
 import {
+  PlaceholderTagFormatType,
+  PlaceholderTagFormatTypeValue,
+  ToggleTypeValue,
+} from "./constants";
+import type {
   PlaceholderSting,
   PlaceholderTag,
-  PlaceholderTagFormatType,
   ProviderType,
   ToggleType,
-} from "./index";
+} from "./constants";
 import PQueue from "p-queue";
 
 type BaseProviderProps = {
+  type: ProviderType;
   name: string;
+  label: string;
   id: string;
   enable: boolean;
+  icon: string | null;
+  sortOrder: number;
   toggleType: ToggleType;
   /**
    * 毫秒
@@ -28,23 +36,27 @@ type BaseProviderProps = {
 };
 
 const DEFAULT_PROPS: BaseProviderProps = {
+  type: undefined,
   name: undefined,
+  label: undefined,
   id: undefined,
+  icon: null,
+  sortOrder: 0,
   enable: true,
-  toggleType: ToggleType.scroll,
+  toggleType: ToggleTypeValue.scroll,
   toggleDelay: 200,
   concurrencyCount: 10,
   concurrencyInterval: 100,
   timeout: 30,
   placeholderSting: "{ }",
   placeholderTag: "<a>",
-  placeholderTagFormatType: PlaceholderTagFormatType.compact,
+  placeholderTagFormatType: PlaceholderTagFormatTypeValue.compact,
 };
 
 abstract class BaseProvider<Props extends BaseProviderProps> {
   abstract type: ProviderType;
   protected props: Props;
-  queue: PQueue
+  queue: PQueue;
 
   constructor(props: Props) {
     this.props = props;
@@ -53,7 +65,7 @@ abstract class BaseProvider<Props extends BaseProviderProps> {
       intervalCap: props.concurrencyCount,
       interval: props.concurrencyInterval,
       timeout: props.timeout * 1000,
-    })
+    });
   }
 }
 

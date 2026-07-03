@@ -1,10 +1,12 @@
 /**
  * @jest-environment node
  */
-import Google1, { DEFAULT_PROPS } from "./Google1";
+import Google1, { GOOGLE1_DEFAULT_PROPS } from "./Google1";
 
 describe("Google1", () => {
-  const google1 = new Google1(DEFAULT_PROPS);
+  const google1 = new Google1(GOOGLE1_DEFAULT_PROPS);
+
+  console.log(JSON.stringify(GOOGLE1_DEFAULT_PROPS));
 
   test("simple single translate", async () => {
     const result = await google1.singleStringTranslate("你好", "zh", "en");
