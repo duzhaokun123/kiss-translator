@@ -269,7 +269,6 @@ export default function Providers() {
     deleteProvider,
     reorderProvider,
   } = useProviderList();
-  const confirm = useConfirm();
 
   const [selectedProviderId, setSelectedProviderId] = React.useState("");
   const [draggingProviderId, setDraggingProviderId] = useState("");
@@ -288,7 +287,7 @@ export default function Providers() {
       event.dataTransfer.dropEffect = "move";
       setDragOverProviderId(id);
     },
-    [draggingProviderId]
+    [draggingProviderId, dragOverProviderId]
   );
 
   const handleDrop = useCallback(

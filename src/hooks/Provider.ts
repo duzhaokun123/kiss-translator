@@ -29,7 +29,7 @@ function useProviderState() {
 }
 
 export function useProviderList() {
-  const { setting, providers, updateSetting } = useProviderState();
+  const { providers, updateSetting } = useProviderState();
 
   const addProvider = useCallback(
     (provider: ProviderItem): void => {
