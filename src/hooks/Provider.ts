@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { OPT_ALL_PROVIDER_PRESET } from "../config/provider";
 import type { BaseProviderProps } from "../libs/provider/BaseProvider";
-import type { ProviderType } from "../libs/provider/constants";
 import { useSetting } from "./Setting";
 
 type ProviderId = BaseProviderProps["id"];
@@ -10,6 +8,12 @@ type Setting = {
   providers?: ProviderItem[];
 };
 type UpdateSetting = (objOrFn: Setting | ((prev?: Setting) => Setting)) => void;
+
+function normalizeApiOrder(providers: ProviderItem[]): ProviderItem[] {
+  return providers.map((provider, index) => ({
+    ...provider, sortOrder: index
+  }))
+}
 
 function useProviderState() {
   const { setting, updateSetting } = useSetting() as {
@@ -29,10 +33,12 @@ export function useProviderList() {
 
   const addProvider = useCallback(
     (provider: ProviderItem): void => {
-      const newProvider = Object.assign({}, provider);
       const uuid = crypto.randomUUID();
-      newProvider.id = uuid;
-      newProvider.name = `${provider.label}_${uuid.slice(0, 8)}`;
+      const newProvider = {
+        ...provider,
+        id: uuid,
+        name: `${provider.label}_${uuid.slice(0, 8)}`
+      }
       updateSetting((prev) => ({
         ...prev,
         providers: [...(prev?.providers || []), newProvider],
@@ -41,9 +47,18 @@ export function useProviderList() {
     [updateSetting]
   );
 
-  const copyProvider = useCallback((providerId: ProviderId): void => {
-    void providerId;
-  }, []);
+  const copyProvider = useCallback((provider: ProviderItem): void => {
+    const uuid = crypto.randomUUID();
+    const newProvider = {
+      ...provider,
+      id: uuid,
+      name: `${provider.name} - copy`
+    }
+    updateSetting((prev) => ({
+      ...prev,
+      providers: [...(prev?.providers || []), newProvider],
+    }))
+  }, [updateSetting]);
 
   const deleteProvider = useCallback(
     (providerId: ProviderId): void => {
@@ -57,14 +72,6 @@ export function useProviderList() {
     [updateSetting]
   );
 
-  const disableProvider = useCallback((providerId: ProviderId): void => {
-    void providerId;
-  }, []);
-
-  const enableProvider = useCallback((providerId: ProviderId): void => {
-    void providerId;
-  }, []);
-
   const reorderProvider = useCallback(
     (activeId: ProviderId, overId: ProviderId): void => {
       if (!activeId || !overId || activeId === overId) return;
@@ -74,10 +81,10 @@ export function useProviderList() {
           (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
         );
         const fromIndex = providers.findIndex(
-          (provider) => provider.id == activeId
+          (provider) => provider.id === activeId
         );
         const toIndex = providers.findIndex(
-          (provider) => provider.id == overId
+          (provider) => provider.id === overId
         );
 
         if (fromIndex < 0 || toIndex < 0) {
@@ -90,7 +97,7 @@ export function useProviderList() {
 
         return {
           ...prev,
-          providers: nextProviders,
+          providers: normalizeApiOrder(nextProviders),
         };
       });
     },
@@ -102,8 +109,6 @@ export function useProviderList() {
     addProvider,
     copyProvider,
     deleteProvider,
-    disableProvider,
-    enableProvider,
     reorderProvider,
   };
 }

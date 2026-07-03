@@ -1,7 +1,7 @@
 import BaseProvider, { BaseProviderProps } from "./BaseProvider";
 import Google1, { Google1Props } from "./Google1";
 import Google2, { Google2Props } from "./Google2";
-import { ProviderType } from "./constants";
+import { ProviderTypeValue } from "./constants";
 export type {
   PlaceholderSting,
   PlaceholderTag,
@@ -14,9 +14,9 @@ function providerFactor(
   providerProps: ProviderProps
 ): BaseProvider<BaseProviderProps> {
   switch (providerProps.type) {
-    case ProviderType.google1:
+    case ProviderTypeValue.google1:
       return new Google1(providerProps as Google1Props);
-    case ProviderType.google2:
+    case ProviderTypeValue.google2:
       return new Google2(providerProps as Google2Props);
   }
   return null;

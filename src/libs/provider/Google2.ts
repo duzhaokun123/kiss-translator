@@ -1,6 +1,6 @@
 import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
 import type { BaseProviderProps } from "./BaseProvider";
-import { PlaceholderTagFormatTypeValue, ProviderType } from "./constants";
+import { PlaceholderTagFormatTypeValue, ProviderTypeValue } from "./constants";
 import type { LanguageCode } from "./constants";
 import type {
   MultiStringTranslate,
@@ -15,7 +15,7 @@ type Google2Props = BaseProviderProps & {
 
 const GOOGLE2_DEFAULT_PROPS: Google2Props = {
   ...DEFAULT_PROPS,
-  type: ProviderType.google2,
+  type: ProviderTypeValue.google2,
   label: "Google2",
   icon: "Google2",
   placeholderTag: "<a>",
@@ -32,7 +32,7 @@ class Google2
   extends BaseProvider<Google2Props>
   implements SingleStingsTranslate, MultiStringTranslate
 {
-  type = ProviderType.google2;
+  type = ProviderTypeValue.google2;
 
   async singleStringTranslate(
     text: string,

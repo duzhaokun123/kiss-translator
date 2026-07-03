@@ -61,7 +61,7 @@ export default function Navigator(props) {
     },
     {
       id: "providers_setting",
-      label: i18n("providers_setting", "供应商设置"),
+      label: i18n("providers_setting"),
       url: "/providers",
       icon: <ApiIcon />,
     },

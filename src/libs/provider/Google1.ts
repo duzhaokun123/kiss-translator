@@ -1,8 +1,6 @@
-import BaseProvider, {
-  DEFAULT_PROPS,
-} from "./BaseProvider";
+import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
 import type { BaseProviderProps } from "./BaseProvider";
-import { ProviderType } from "./constants";
+import { ProviderTypeValue } from "./constants";
 import type { LanguageCode } from "./constants";
 import type {
   LanguageDetection,
@@ -19,7 +17,7 @@ type Google1Props = BaseProviderProps & {
 
 const GOOGLE1_DEFAULT_PROPS: Google1Props = {
   ...DEFAULT_PROPS,
-  type: ProviderType.google1,
+  type: ProviderTypeValue.google1,
   label: "Google1",
   icon: "Google",
   key: null,
@@ -43,7 +41,7 @@ class Google1
   extends BaseProvider<Google1Props>
   implements SingleStingsTranslate, LanguageDetection
 {
-  type = ProviderType.google1;
+  type = ProviderTypeValue.google1;
 
   async singleStringTranslate(
     text: string,

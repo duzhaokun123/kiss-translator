@@ -59,6 +59,9 @@ function ProviderFields({providerId, deleteProvider, copyProvider}) {
         <Button size="small" variant="contained" onClick={handleSave}>
           {i18n("save")}
         </Button>
+        <Button size="small" variant="outlined" onClick={() => copyProvider(provider)}>
+          {i18n("copy")}
+        </Button>
         <Button
           size="small"
           variant="outlined"
@@ -80,14 +83,11 @@ export default function Providers() {
     addProvider,
     copyProvider,
     deleteProvider,
-    disableProvider,
-    enableProvider,
     reorderProvider,
   } = useProviderList();
   const confirm = useConfirm();
 
   const [selectedProviderId, setSelectedProviderId] = React.useState("");
-  const [bulkMode, setBulkMode] = useState(false);
   const [checkedProviderIds, setCheckedProviderIds] = useState([]);
   const [draggingProviderId, setDraggingProviderId] = useState("");
   const [dragOverProviderId, setDragOverProviderId] = useState("");
@@ -161,7 +161,7 @@ export default function Providers() {
         <Box>
           <Stack
             direction="row"
-            alignContent="conter"
+            alignContent="center"
             spacing={2}
             useFlexGap
             flexWrap="wrap"
@@ -243,8 +243,8 @@ export default function Providers() {
                     apiName: provider.name,
                     isDisabled: !provider.enable,
                   }}
-                  selected={provider.id === selectedProviderId}
-                  bulkMode={bulkMode}
+                  selected={false}
+                  bulkMode={false}
                   checked={provider.id in checkedProviderIds}
                   dragging={provider.id === draggingProviderId}
                   dragOver={provider.id === dragOverProviderId}

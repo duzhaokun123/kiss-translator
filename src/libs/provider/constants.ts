@@ -1,8 +1,8 @@
-export const ProviderType = {
+export const ProviderTypeValue = {
   google1: "google1",
   google2: "google2",
 } as const;
-export type ProviderType = (typeof ProviderType)[keyof typeof ProviderType];
+export type ProviderType = (typeof ProviderTypeValue)[keyof typeof ProviderTypeValue];
 
 export const ToggleTypeValue = {
   scroll: "scroll",
