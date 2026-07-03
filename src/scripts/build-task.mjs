@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
-import { argv, quote, $ } from "zx";
+import { argv, quote, $, ProcessOutput } from "zx";
 
 // 在 Windows 上使用 cmd.exe，避免 zx 默认使用 WSL bash 导致 node not found
 if (process.platform === "win32") {
@@ -56,7 +56,7 @@ try {
       .join(" ");
 
     console.log(chalk.gray(`Running react-app-rewired build...`));
-    await $`react-app-rewired build`;
+    await $({ stdio: "inherit" })`react-app-rewired build`;
   }
 
   // 3. 【后处理】 文件清理与移动
@@ -125,6 +125,8 @@ try {
   );
 } catch (err) {
   console.error(chalk.red(`\n❌ Build failed for ${target}:`));
-  console.error(err);
+  if (!(err instanceof ProcessOutput)) {
+    console.error(err);
+  }
   process.exit(1);
 }
