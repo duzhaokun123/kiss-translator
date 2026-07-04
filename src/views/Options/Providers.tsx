@@ -54,6 +54,7 @@ function TestButton({ provider }: { provider: ProviderItem }) {
       const text = "The quick brown fox jumps over the lazy dog.";
       const texts = ["The quick brown fox.", "Jumps over the lazy dog."];
 
+      // Test SingleStingsTranslate
       if ("singleStringTranslate" in testProvider) {
         try {
           const translate = await (
@@ -78,8 +79,19 @@ function TestButton({ provider }: { provider: ProviderItem }) {
             content: <pre>{e.message || e.toString()}</pre>,
           });
         }
+      } else {
+        testResults.push({
+          label: "singleStringTranslate",
+          success: false,
+          content: (
+            <Typography variant="body2" color="text.secondary">
+              {i18n("interface_not_supported")}
+            </Typography>
+          ),
+        });
       }
 
+      // Test MultiStringTranslate
       if ("multiStringTranslate" in testProvider) {
         try {
           const translates = await (
@@ -107,8 +119,19 @@ function TestButton({ provider }: { provider: ProviderItem }) {
             content: <pre>{e.message || e.toString()}</pre>,
           });
         }
+      } else {
+        testResults.push({
+          label: "multiStringTranslate",
+          success: false,
+          content: (
+            <Typography variant="body2" color="text.secondary">
+              {i18n("interface_not_supported")}
+            </Typography>
+          ),
+        });
       }
 
+      // Test LanguageDetection
       if ("languageDetection" in testProvider) {
         try {
           const language = await (
@@ -118,7 +141,9 @@ function TestButton({ provider }: { provider: ProviderItem }) {
             label: "languageDetection",
             success: Boolean(language),
             content: language ? (
-              <Typography variant="body2">{text} - {language}</Typography>
+              <Typography variant="body2">
+                {text} - {language}
+              </Typography>
             ) : (
               <pre>empty response</pre>
             ),
@@ -130,14 +155,14 @@ function TestButton({ provider }: { provider: ProviderItem }) {
             content: <pre>{e.message || e.toString()}</pre>,
           });
         }
-      }
-
-      if (!testResults.length) {
+      } else {
         testResults.push({
-          label: "features",
+          label: "languageDetection",
           success: false,
           content: (
-            <Typography variant="body2">No testable features.</Typography>
+            <Typography variant="body2" color="text.secondary">
+              {i18n("interface_not_supported")}
+            </Typography>
           ),
         });
       }

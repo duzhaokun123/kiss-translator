@@ -63,7 +63,7 @@ class Google2
     if (!resp.ok) {
       throw new Error(`http error ${resp.status} ${resp.statusText}`);
     }
-    const json: [[string]] = await resp.json();
+    const json: string[][] = await resp.json();
     return json[0].map((item) => {
       return {
         translate: item,
