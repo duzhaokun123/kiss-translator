@@ -275,6 +275,30 @@ export const fetchHandle = async ({ input, init, opts = {} }) => {
 };
 
 /**
+ * 发起请求并期望返回文本响应 这样可以返回为 Response 类似物
+ *
+ * @param {Object} p0
+ * @param {string} p0.input url
+ * @param {RequestInit} p0.init RequestInit
+ * @return {Promise<{body: string, headers: [string, string][], status: number, statusText: string}>} Response 类似物 可以构造 Response 可以透过消息传递
+ */
+export const fetchTextResponseHandle = async ({ input, init, opts = {} }) => {
+  const resp = await fetchPatcher(input, init, opts);
+
+  const headers = []
+  resp.headers.forEach((value, key) => {
+    headers.push([key, value])
+  })
+
+  return {
+    body: await resp.text(),
+    headers: headers,
+    status: resp.status,
+    statusText: resp.statusText,
+  };
+}
+
+/**
  * 普通请求的跨上下文代理入口。
  *
  * @param {Object} params 参数对象。

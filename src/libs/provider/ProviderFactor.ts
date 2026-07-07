@@ -31,13 +31,13 @@ export default {
     return provider;
   },
 
-  createById(id: string, useCache: Boolean = true): Provider {
+  createById(id: string, providerPropsList: ProviderProps[], useCache: Boolean = true): Provider {
     let provider: BaseProvider<ProviderProps> | null;
     provider = providerCache[id];
     if (provider != null && useCache) {
       return provider;
     }
-    const providerProps = Translator.DEFAULT_OPTIONS.providers.find((provider) => provider.id === id);
+    const providerProps = providerPropsList.find((provider) => provider.id === id);
     if (providerProps == null) {
       throw new Error(`Provider ${id} not found`);
     }

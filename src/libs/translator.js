@@ -37,6 +37,7 @@ import { injectInternalCss } from "./injector";
 import { isExt } from "./client";
 import { sendBgMsg } from "./msg";
 import { getDocInfo } from "./docInfo";
+import ProviderFactor from "./provider/ProviderFactor";
 
 /**
  * @class Translator
@@ -2123,7 +2124,7 @@ export class Translator {
 
       // 2. 发起真实的翻译网络请求
       const { trText: translatedText, isSame: isSameLang } =
-        await this.#translateFetch(processedString, deLang, onStreamChunk);
+        await this.#translateFetchByProvider(processedString, deLang, onStreamChunk);
 
       // 请求完成后，立刻注销多余的 RAF 定时监听器，防止内存泄漏
       if (rafId) {
@@ -2351,7 +2352,7 @@ overflow-wrap: anywhere !important;`;
         }
       }
 
-      const { trText, isSame } = await this.#translateFetch(text, deLang);
+      const { trText, isSame } = await this.#translateFetchByProvider(text, deLang);
       if (
         this.#hoverBubbleRunId !== currentRunId ||
         this.#hoverBubbleTarget !== node
@@ -2622,6 +2623,31 @@ overflow-wrap: anywhere !important;`;
     }
 
     return apiTranslate(args);
+  }
+
+  /**
+   * 使用 provider 的翻译
+   * @param text 待翻译文本
+   * @param deLang 识别的文本语言
+   * @param onStreamChunk 别用
+   * @returns {trText: string, srLang: string, srCode: string, isSame: Boolean}
+   */
+  async #translateFetchByProvider(text, deLang = null, onStreamChunk = null) {
+    const { toLang, providerId } = this.#rule;
+    const fromLang = deLang || this.#rule.fromLang;
+    const provider = ProviderFactor.createById(providerId, this.#setting.providers);
+
+    if ("singleStringTranslate" in provider) {
+      const translateResult = await provider.singleStringTranslate(text, fromLang, toLang)
+      return {
+        trText: translateResult.translate,
+        srLang: translateResult.src,
+        srCode: translateResult.src,
+        isSame: false,
+      };
+    } else {
+      throw new Error("unsupported provider");
+    }
   }
 
   // 查找指定节点下所有译文节点
@@ -3196,7 +3222,7 @@ overflow-wrap: anywhere !important;`;
 
     try {
       const deLang = await tryDetectLang(docInfo.title);
-      const { trText } = await this.#translateFetch(docInfo.title, deLang);
+      const { trText } = await this.#translateFetchByProvider(docInfo.title, deLang);
       this.#docInfo.title = document.title; // 缓存原标题
       document.title = trText || docInfo.title;
     } catch (err) {
