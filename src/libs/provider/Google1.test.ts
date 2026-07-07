@@ -9,7 +9,7 @@ describe("Google1", () => {
   console.log(JSON.stringify(GOOGLE1_DEFAULT_PROPS));
 
   test("simple single translate", async () => {
-    const result = await google1.singleStringTranslate("你好", "zh", "en");
+    const result = await google1.singleStringTranslate("你好", "auto", "en");
     expect(result).toEqual({src: "zh-CN", translate: "Hello"})
   });
 

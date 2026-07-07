@@ -19,7 +19,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CodeField from "./CodeField";
 import { useConfirm } from "../../hooks/Confirm";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { providerFactor } from "../../libs/provider";
 import {
   LanguageDetection,
   MultiStringTranslate,
@@ -31,6 +30,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import ProviderFactor from "../../libs/provider/ProviderFactor";
 
 type TestResult = {
   label: string;
@@ -49,7 +49,7 @@ function TestButton({ provider }: { provider: ProviderItem }) {
     setResults([]);
     try {
       setLoading(true);
-      const testProvider = providerFactor(provider);
+      const testProvider = ProviderFactor.createByProps(provider, false);
       const testResults: TestResult[] = [];
       const text = "The quick brown fox jumps over the lazy dog.";
       const texts = ["The quick brown fox.", "Jumps over the lazy dog."];

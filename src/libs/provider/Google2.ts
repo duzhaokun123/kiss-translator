@@ -1,7 +1,10 @@
 import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
 import type { BaseProviderProps } from "./BaseProvider";
-import { PlaceholderTagFormatTypeValue, ProviderTypeValue } from "./constants";
-import type { LanguageCode } from "./constants";
+import {
+  LanguageCode,
+  PlaceholderTagFormatTypeValue,
+  ProviderTypeValue,
+} from "./constants";
 import type {
   MultiStringTranslate,
   SingleStingsTranslate,
@@ -18,7 +21,7 @@ const GOOGLE2_DEFAULT_PROPS: Google2Props = {
   type: ProviderTypeValue.google2,
   label: "Google2",
   icon: "Google2",
-  placeholderTag: "<a>",
+  placeholderTag: "a",
   placeholderTagFormatType: PlaceholderTagFormatTypeValue.attribute,
   key: "AIzaSyATBXajvzQLTDHEQbcpq0Ihe0vWDHmO520",
 };

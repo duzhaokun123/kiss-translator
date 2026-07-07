@@ -31,6 +31,11 @@ function useProviderState() {
 export function useProviderList() {
   const { providers, updateSetting } = useProviderState();
 
+  const enabledProviders = useMemo(
+    () => providers.filter((provider) => provider.enable),
+    [providers]
+  )
+
   const addProvider = useCallback(
     (provider: ProviderItem): void => {
       const uuid = crypto.randomUUID();
@@ -106,6 +111,7 @@ export function useProviderList() {
 
   return {
     providers,
+    enabledProviders,
     addProvider,
     copyProvider,
     deleteProvider,

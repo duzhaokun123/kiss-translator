@@ -1,7 +1,9 @@
 import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
 import type { BaseProviderProps } from "./BaseProvider";
-import { ProviderTypeValue } from "./constants";
-import type { LanguageCode } from "./constants";
+import {
+  LanguageCode,
+  ProviderTypeValue,
+} from "./constants";
 import type {
   LanguageDetection,
   SingleStingsTranslate,
@@ -79,12 +81,12 @@ class Google1
     const json: Google1Response = await resp.json();
     return {
       translate: json.sentences.map((item) => item.trans).join(" "),
-      src: json.src,
+      src: json.src as LanguageCode,
     };
   }
 
   languageDetection(text: string): Promise<LanguageCode> {
-    return apiGoogleLangdetect(text);
+    return apiGoogleLangdetect(text) as Promise<LanguageCode>;
   }
 }
 

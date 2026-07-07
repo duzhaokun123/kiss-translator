@@ -21,13 +21,13 @@ type BaseProviderProps = {
   sortOrder: number;
   toggleType: ToggleType;
   /**
-   * 毫秒
+   * 触发延迟毫秒
    */
   toggleDelay: number;
   concurrencyCount: number;
   concurrencyInterval: number;
   /**
-   * 秒
+   * 请求超时秒
    */
   timeout: number;
   placeholderSting: PlaceholderSting;
@@ -49,7 +49,7 @@ const DEFAULT_PROPS: BaseProviderProps = {
   concurrencyInterval: 100,
   timeout: 30,
   placeholderSting: "{ }",
-  placeholderTag: "<a>",
+  placeholderTag: "a",
   placeholderTagFormatType: PlaceholderTagFormatTypeValue.compact,
 };
 

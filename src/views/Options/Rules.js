@@ -68,6 +68,7 @@ import { useApiList } from "../../hooks/Api";
 import ShowMoreButton from "./ShowMoreButton";
 import { useConfirm } from "../../hooks/Confirm";
 import { useAllTextStyles } from "../../hooks/CustomStyles";
+import { useProviderList } from "../../hooks/Provider";
 
 // 计算规则的初始表单值
 const calculateInitialValues = (rule) => {
@@ -98,6 +99,7 @@ function RuleFields({ rule, rules, setShow, setKeyword }) {
   const { enabledApis } = useApiList();
   // 获取自定义文本样式列表
   const { allTextStyles } = useAllTextStyles();
+  const { enabledProviders } = useProviderList()
 
   // 当传入的 rule 发生改变时（如切换了编辑的规则），同步更新表单的初始值和当前值
   useEffect(() => {
@@ -125,6 +127,7 @@ function RuleFields({ rule, rules, setShow, setKeyword }) {
     injectJs = "", // 页面注入 JS 脚本
     injectCss = "", // 页面注入 CSS 样式
     apiSlug, // 指定的翻译服务标识
+    providerId,
     fromLang, // 源语言
     toLang, // 目标语言
     textStyle, // 预设译文样式 slug
@@ -361,6 +364,26 @@ function RuleFields({ rule, rules, setShow, setKeyword }) {
                 {enabledApis.map((api) => (
                   <MenuItem key={api.apiSlug} value={api.apiSlug}>
                     {api.apiName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            {/* 翻译 provider 设置 */}
+            <Grid item xs={12} sm={12} md={6} lg={3}>
+              <TextField
+                select
+                size="small"
+                fullWidth
+                name="providerId"
+                value={providerId}
+                label={i18n("translate_service")}
+                disabled={disabled}
+                onChange={handleChange}
+              >
+                {GlobalItem}
+                {enabledProviders.map((provider) => (
+                  <MenuItem key={provider.id} value={provider.id}>
+                    {provider.name}
                   </MenuItem>
                 ))}
               </TextField>
