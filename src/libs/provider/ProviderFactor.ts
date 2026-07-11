@@ -2,15 +2,22 @@ import BaseProvider, { BaseProviderProps } from "./BaseProvider";
 import Google1, { Google1Props } from "./Google1";
 import Google2, { Google2Props } from "./Google2";
 import Microsoft, { MicrosoftProps } from "./Microsoft";
+import AzureAI, { AzureAIProps } from "./AzureAI";
 import { ProviderTypeValue } from "./constants";
 
 type ProviderProps =
   | BaseProviderProps
   | Google1Props
   | Google2Props
-  | MicrosoftProps;
+  | MicrosoftProps
+  | AzureAIProps;
 
-type Provider = BaseProvider<ProviderProps> | Google1 | Google2 | Microsoft;
+type Provider =
+  | BaseProvider<ProviderProps>
+  | Google1
+  | Google2
+  | Microsoft
+  | AzureAI;
 
 const providerCache = new Map<string, BaseProvider<ProviderProps>>();
 
@@ -33,6 +40,9 @@ export default {
         break;
       case ProviderTypeValue.microsoft:
         provider = new Microsoft(providerProps as MicrosoftProps);
+        break;
+      case ProviderTypeValue.azureai:
+        provider = new AzureAI(providerProps as AzureAIProps);
         break;
     }
     providerCache[providerProps.id] = provider;

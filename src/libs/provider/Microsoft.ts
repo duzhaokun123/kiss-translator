@@ -30,7 +30,6 @@ const MICROSOFT_URL =
   "https://api-edge.cognitive.microsofttranslator.com/translate";
 
 const LANG_MAP: Partial<Record<LanguageCode, string>> = {
-  auto: "",
   "zh-CN": "zh-Hans",
   "zh-TW": "zh-Hant",
 };
@@ -79,14 +78,12 @@ class Microsoft
       throw new Error("got msauth error");
     }
 
-    const from = mapLang(src);
-    const to = mapLang(dst);
     const query: Record<string, string> = {
-      to,
+      to: mapLang(dst),
       "api-version": "3.0",
     };
-    if (from) {
-      query.from = from;
+    if (src !== "auto") {
+      query.from = mapLang(src);
     }
 
     const url = queryString.stringifyUrl({
