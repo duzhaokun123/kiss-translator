@@ -1,23 +1,26 @@
-import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
+import BaseProvider, {
+  BATCH_TRANSLATE_PROPS,
+  BatchTranslateProps,
+  DEFAULT_PROPS,
+} from "./BaseProvider";
 import type { BaseProviderProps } from "./BaseProvider";
 import {
   LanguageCode,
   PlaceholderTagFormatTypeValue,
   ProviderTypeValue,
 } from "./constants";
-import type {
-  MultiStringTranslate,
-  SingleStingsTranslate,
-  TranslateResult,
-} from "./interfaces";
+import type { Translate, TranslateResult } from "./interfaces";
 import fetch from "../fetchCompat";
+import { BatchQueue } from "../batchQueue";
 
-type Google2Props = BaseProviderProps & {
-  key: string;
-};
+type Google2Props = BaseProviderProps &
+  BatchTranslateProps & {
+    key: string;
+  };
 
 const GOOGLE2_DEFAULT_PROPS: Google2Props = {
   ...DEFAULT_PROPS,
+  ...BATCH_TRANSLATE_PROPS,
   type: ProviderTypeValue.google2,
   label: "Google2",
   icon: "Google2",
@@ -31,21 +34,31 @@ const GOOGLE2_URL = "https://translate-pa.googleapis.com/v1/translateHtml";
 /**
  * FIXME: 使用官方客户端库 这个端口甚至没有文档
  */
-class Google2
-  extends BaseProvider<Google2Props>
-  implements SingleStingsTranslate, MultiStringTranslate
-{
+class Google2 extends BaseProvider<Google2Props> implements Translate {
   type = ProviderTypeValue.google2;
+  private batchQueue = BatchQueue(
+    (
+      text: string[],
+      { src, dst }: { src: LanguageCode; dst: LanguageCode }
+    ) => {
+      return this.multiStringTranslate(text, src, dst);
+    },
+    {
+      batchInterval: this.props.batchIntervalMs,
+      batchSize: this.props.batchSize,
+      batchLength: this.props.batchLength,
+    }
+  );
 
-  async singleStringTranslate(
+  async translate(
     text: string,
     src: LanguageCode,
     dst: LanguageCode
   ): Promise<TranslateResult> {
-    return (await this.multiStringTranslate([text], src, dst))[0];
+    return this.batchQueue.addTask(text, { src, dst });
   }
 
-  async multiStringTranslate(
+  private async multiStringTranslate(
     text: string[],
     src: LanguageCode,
     dst: LanguageCode

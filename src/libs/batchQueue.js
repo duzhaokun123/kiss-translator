@@ -16,7 +16,7 @@ import {
  * @param {number} [options.batchLength] - 整个批次中所有文本内容的最大字符长度上限，防止超长报错
  * @returns {object} 返回具有 addTask 和 destroy 方法的实例对象
  */
-const BatchQueue = (
+export const BatchQueue = (
   taskFn,
   {
     batchInterval = DEFAULT_BATCH_INTERVAL,

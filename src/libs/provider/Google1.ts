@@ -1,12 +1,9 @@
 import BaseProvider, { DEFAULT_PROPS } from "./BaseProvider";
 import type { BaseProviderProps } from "./BaseProvider";
-import {
-  LanguageCode,
-  ProviderTypeValue,
-} from "./constants";
+import { LanguageCode, ProviderTypeValue } from "./constants";
 import type {
   LanguageDetection,
-  SingleStingsTranslate,
+  Translate,
   TranslateResult,
 } from "./interfaces";
 import fetch from "../fetchCompat";
@@ -41,11 +38,11 @@ type Google1Response = {
 
 class Google1
   extends BaseProvider<Google1Props>
-  implements SingleStingsTranslate, LanguageDetection
+  implements Translate, LanguageDetection
 {
   type = ProviderTypeValue.google1;
 
-  async singleStringTranslate(
+  async translate(
     text: string,
     src: LanguageCode,
     dst: LanguageCode

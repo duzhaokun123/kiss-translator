@@ -9,12 +9,12 @@ describe("Google1", () => {
   console.log(JSON.stringify(GOOGLE1_DEFAULT_PROPS));
 
   test("simple single translate", async () => {
-    const result = await google1.singleStringTranslate("你好", "auto", "en");
-    expect(result).toEqual({src: "zh-CN", translate: "Hello"})
+    const result = await google1.translate("你好", "auto", "en");
+    expect(result).toEqual({ src: "zh-CN", translate: "Hello" });
   });
 
   test("language detection", async () => {
-    const result = await google1.languageDetection("English")
-    expect(result).toEqual("en")
-  })
+    const result = await google1.languageDetection("English");
+    expect(result).toEqual("en");
+  });
 });

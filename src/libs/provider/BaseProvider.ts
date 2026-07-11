@@ -23,13 +23,13 @@ type BaseProviderProps = {
   /**
    * 触发延迟毫秒
    */
-  toggleDelay: number;
+  toggleDelayMs: number;
   concurrencyCount: number;
   concurrencyInterval: number;
   /**
    * 请求超时秒
    */
-  timeout: number;
+  timeoutS: number;
   placeholderSting: PlaceholderSting;
   placeholderTag: PlaceholderTag;
   placeholderTagFormatType: PlaceholderTagFormatType;
@@ -44,13 +44,25 @@ const DEFAULT_PROPS: BaseProviderProps = {
   sortOrder: 0,
   enable: true,
   toggleType: ToggleTypeValue.scroll,
-  toggleDelay: 200,
+  toggleDelayMs: 200,
   concurrencyCount: 10,
   concurrencyInterval: 100,
-  timeout: 30,
+  timeoutS: 30,
   placeholderSting: "{ }",
   placeholderTag: "a",
   placeholderTagFormatType: PlaceholderTagFormatTypeValue.compact,
+};
+
+type BatchTranslateProps = {
+  batchIntervalMs: number;
+  batchSize: number;
+  batchLength: number;
+};
+
+const BATCH_TRANSLATE_PROPS: BatchTranslateProps = {
+  batchIntervalMs: 400,
+  batchSize: 20,
+  batchLength: 10_000,
 };
 
 abstract class BaseProvider<Props extends BaseProviderProps> {
@@ -65,11 +77,11 @@ abstract class BaseProvider<Props extends BaseProviderProps> {
       concurrency: props.concurrencyCount,
       intervalCap: props.concurrencyCount,
       interval: props.concurrencyInterval,
-      timeout: props.timeout * 1000,
+      timeout: props.timeoutS * 1000,
     });
   }
 }
 
 export default BaseProvider;
-export type { BaseProviderProps };
-export { DEFAULT_PROPS };
+export type { BaseProviderProps, BatchTranslateProps };
+export { DEFAULT_PROPS, BATCH_TRANSLATE_PROPS };

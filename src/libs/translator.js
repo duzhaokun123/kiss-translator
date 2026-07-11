@@ -2637,8 +2637,8 @@ overflow-wrap: anywhere !important;`;
     const fromLang = deLang || this.#rule.fromLang;
     const provider = ProviderFactor.createById(providerId, this.#setting.providers);
 
-    if ("singleStringTranslate" in provider) {
-      const translateResult = await provider.singleStringTranslate(text, fromLang, toLang)
+    if ("translate" in provider) {
+      const translateResult = await provider.translate(text, fromLang, toLang);
       return {
         trText: translateResult.translate,
         srLang: translateResult.src,

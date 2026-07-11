@@ -19,11 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CodeField from "./CodeField";
 import { useConfirm } from "../../hooks/Confirm";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {
-  LanguageDetection,
-  MultiStringTranslate,
-  SingleStingsTranslate,
-} from "../../libs/provider/interfaces";
+import { LanguageDetection, Translate } from "../../libs/provider/interfaces";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -52,16 +48,17 @@ function TestButton({ provider }: { provider: ProviderItem }) {
       const testProvider = ProviderFactor.createByProps(provider, false);
       const testResults: TestResult[] = [];
       const text = "The quick brown fox jumps over the lazy dog.";
-      const texts = ["The quick brown fox.", "Jumps over the lazy dog."];
 
-      // Test SingleStingsTranslate
-      if ("singleStringTranslate" in testProvider) {
+      // Test Translate
+      if ("translate" in testProvider) {
         try {
-          const translate = await (
-            testProvider as SingleStingsTranslate
-          ).singleStringTranslate(text, "en", "zh-CN");
+          const translate = await (testProvider as Translate).translate(
+            text,
+            "en",
+            "zh-CN"
+          );
           testResults.push({
-            label: "singleStringTranslate",
+            label: "translate",
             success: Boolean(translate),
             content: translate ? (
               <Stack spacing={0.5}>
@@ -74,54 +71,14 @@ function TestButton({ provider }: { provider: ProviderItem }) {
           });
         } catch (e) {
           testResults.push({
-            label: "singleStringTranslate",
+            label: "translate",
             success: false,
             content: <pre>{e.message || e.toString()}</pre>,
           });
         }
       } else {
         testResults.push({
-          label: "singleStringTranslate",
-          success: false,
-          content: (
-            <Typography variant="body2" color="text.secondary">
-              {i18n("interface_not_supported")}
-            </Typography>
-          ),
-        });
-      }
-
-      // Test MultiStringTranslate
-      if ("multiStringTranslate" in testProvider) {
-        try {
-          const translates = await (
-            testProvider as MultiStringTranslate
-          ).multiStringTranslate(texts, "en", "zh-CN");
-          testResults.push({
-            label: "multiStringTranslate",
-            success: Boolean(translates?.length),
-            content: translates?.length ? (
-              <Stack spacing={0.5}>
-                {texts.map((item, index) => (
-                  <Typography variant="body2" key={item}>
-                    {item} - {translates[index]?.translate}
-                  </Typography>
-                ))}
-              </Stack>
-            ) : (
-              <pre>empty response</pre>
-            ),
-          });
-        } catch (e) {
-          testResults.push({
-            label: "multiStringTranslate",
-            success: false,
-            content: <pre>{e.message || e.toString()}</pre>,
-          });
-        }
-      } else {
-        testResults.push({
-          label: "multiStringTranslate",
+          label: "translate",
           success: false,
           content: (
             <Typography variant="body2" color="text.secondary">
