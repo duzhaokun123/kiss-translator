@@ -43,9 +43,11 @@
     "build:userscript-ios": "zx src/scripts/build-ios.mjs",
     "build:rules": "babel-node src/rules.js",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,html}\"",
-    "build": "pnpm sync-version && pnpm format && pnpm build:chrome && pnpm build:edge && pnpm build:thunderbird && pnpm build:firefox && pnpm build:web && pnpm build:userscript-ios && pnpm build:rules",
+    "build": "pnpm sync-version && pnpm build:chrome && pnpm build:edge && pnpm build:thunderbird && pnpm build:firefox && pnpm build:web && pnpm build:userscript-ios && pnpm build:rules",
+    "build+format": "pnpm format && pnpm build",
     "zip": "zx src/scripts/archive.mjs",
-    "build+zip": "cross-env CI=true pnpm build && pnpm zip",
+    "build+format+zip": "cross-env CI=false pnpm build+format && pnpm zip",
+    "build+format+zip+ci": "cross-env CI=true pnpm build+format+zip",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "jest": "jest"
