@@ -32,7 +32,7 @@ const GOOGLE2_DEFAULT_PROPS: Google2Props = {
 const GOOGLE2_URL = "https://translate-pa.googleapis.com/v1/translateHtml";
 
 /**
- * FIXME: 使用官方客户端库 这个端口甚至没有文档
+ * FIXME: 使用官方客户端库 这个端点甚至没有文档
  */
 class Google2 extends BaseProvider<Google2Props> implements Translate {
   type = ProviderTypeValue.google2;

@@ -1,11 +1,16 @@
 import BaseProvider, { BaseProviderProps } from "./BaseProvider";
 import Google1, { Google1Props } from "./Google1";
 import Google2, { Google2Props } from "./Google2";
+import Microsoft, { MicrosoftProps } from "./Microsoft";
 import { ProviderTypeValue } from "./constants";
 
-type ProviderProps = BaseProviderProps | Google1Props | Google2Props;
+type ProviderProps =
+  | BaseProviderProps
+  | Google1Props
+  | Google2Props
+  | MicrosoftProps;
 
-type Provider = BaseProvider<ProviderProps> | Google1 | Google2;
+type Provider = BaseProvider<ProviderProps> | Google1 | Google2 | Microsoft;
 
 const providerCache = new Map<string, BaseProvider<ProviderProps>>();
 
@@ -25,6 +30,9 @@ export default {
         break;
       case ProviderTypeValue.google2:
         provider = new Google2(providerProps as Google2Props);
+        break;
+      case ProviderTypeValue.microsoft:
+        provider = new Microsoft(providerProps as MicrosoftProps);
         break;
     }
     providerCache[providerProps.id] = provider;

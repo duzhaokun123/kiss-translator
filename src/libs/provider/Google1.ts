@@ -47,7 +47,6 @@ class Google1
     src: LanguageCode,
     dst: LanguageCode
   ): Promise<TranslateResult> {
-    // FIXME 语言代码映射
     const url = queryString.stringifyUrl({
       url: GOOGLE1_URL,
       query: {
