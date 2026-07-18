@@ -3,6 +3,7 @@ import Google1, { Google1Props } from "./Google1";
 import Google2, { Google2Props } from "./Google2";
 import Microsoft, { MicrosoftProps } from "./Microsoft";
 import AzureAI, { AzureAIProps } from "./AzureAI";
+import Tencent, { TencentProps } from "./Tencent";
 import { ProviderTypeValue } from "./constants";
 
 type ProviderProps =
@@ -10,14 +11,16 @@ type ProviderProps =
   | Google1Props
   | Google2Props
   | MicrosoftProps
-  | AzureAIProps;
+  | AzureAIProps
+  | TencentProps;
 
 type Provider =
   | BaseProvider<ProviderProps>
   | Google1
   | Google2
   | Microsoft
-  | AzureAI;
+  | AzureAI
+  | Tencent;
 
 const providerCache = new Map<string, BaseProvider<ProviderProps>>();
 
@@ -43,6 +46,9 @@ export default {
         break;
       case ProviderTypeValue.azureai:
         provider = new AzureAI(providerProps as AzureAIProps);
+        break;
+      case ProviderTypeValue.tencent:
+        provider = new Tencent(providerProps as TencentProps);
         break;
     }
     providerCache[providerProps.id] = provider;

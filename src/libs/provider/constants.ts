@@ -3,6 +3,7 @@ export const ProviderTypeValue = {
   google2: "google2",
   microsoft: "microsoft",
   azureai: "azureai",
+  tencent: "tencent",
 } as const;
 export type ProviderType =
   (typeof ProviderTypeValue)[keyof typeof ProviderTypeValue];
