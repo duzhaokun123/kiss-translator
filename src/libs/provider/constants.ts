@@ -7,6 +7,7 @@ export const ProviderTypeValue = {
   volcengine: "volcengine",
   deepl: "deepl",
   cloudflareai: "cloudflareai",
+  builtinai: "builtinai",
 } as const;
 export type ProviderType =
   (typeof ProviderTypeValue)[keyof typeof ProviderTypeValue];
