@@ -5,6 +5,7 @@ import Microsoft, { MicrosoftProps } from "./Microsoft";
 import AzureAI, { AzureAIProps } from "./AzureAI";
 import Tencent, { TencentProps } from "./Tencent";
 import Volcengine, { VolcengineProps } from "./Volcengine";
+import DeepL, { DeepLProps } from "./DeepL";
 import { ProviderTypeValue } from "./constants";
 
 type ProviderProps =
@@ -14,7 +15,8 @@ type ProviderProps =
   | MicrosoftProps
   | AzureAIProps
   | TencentProps
-  | VolcengineProps;
+  | VolcengineProps
+  | DeepLProps;
 
 type Provider =
   | BaseProvider<ProviderProps>
@@ -23,7 +25,8 @@ type Provider =
   | Microsoft
   | AzureAI
   | Tencent
-  | Volcengine;
+  | Volcengine
+  | DeepL;
 
 const providerCache = new Map<string, BaseProvider<ProviderProps>>();
 
@@ -55,6 +58,9 @@ export default {
         break;
       case ProviderTypeValue.volcengine:
         provider = new Volcengine(providerProps as VolcengineProps);
+        break;
+      case ProviderTypeValue.deepl:
+        provider = new DeepL(providerProps as DeepLProps);
         break;
     }
     providerCache[providerProps.id] = provider;
