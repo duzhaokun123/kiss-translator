@@ -3,6 +3,7 @@ import { GOOGLE2_DEFAULT_PROPS } from "../libs/provider/Google2";
 import { MICROSOFT_DEFAULT_PROPS } from "../libs/provider/Microsoft";
 import { AZUREAI_DEFAULT_PROPS } from "../libs/provider/AzureAI";
 import { TENCENT_DEFAULT_PROPS } from "../libs/provider/Tencent";
+import { VOLCENGINE_DEFAULT_PROPS } from "../libs/provider/Volcengine";
 
 export const OPT_ALL_PROVIDER_PRESET = [
   GOOGLE1_DEFAULT_PROPS,
@@ -10,4 +11,5 @@ export const OPT_ALL_PROVIDER_PRESET = [
   MICROSOFT_DEFAULT_PROPS,
   AZUREAI_DEFAULT_PROPS,
   TENCENT_DEFAULT_PROPS,
+  VOLCENGINE_DEFAULT_PROPS,
 ];

@@ -4,6 +4,7 @@ import Google2, { Google2Props } from "./Google2";
 import Microsoft, { MicrosoftProps } from "./Microsoft";
 import AzureAI, { AzureAIProps } from "./AzureAI";
 import Tencent, { TencentProps } from "./Tencent";
+import Volcengine, { VolcengineProps } from "./Volcengine";
 import { ProviderTypeValue } from "./constants";
 
 type ProviderProps =
@@ -12,7 +13,8 @@ type ProviderProps =
   | Google2Props
   | MicrosoftProps
   | AzureAIProps
-  | TencentProps;
+  | TencentProps
+  | VolcengineProps;
 
 type Provider =
   | BaseProvider<ProviderProps>
@@ -20,7 +22,8 @@ type Provider =
   | Google2
   | Microsoft
   | AzureAI
-  | Tencent;
+  | Tencent
+  | Volcengine;
 
 const providerCache = new Map<string, BaseProvider<ProviderProps>>();
 
@@ -49,6 +52,9 @@ export default {
         break;
       case ProviderTypeValue.tencent:
         provider = new Tencent(providerProps as TencentProps);
+        break;
+      case ProviderTypeValue.volcengine:
+        provider = new Volcengine(providerProps as VolcengineProps);
         break;
     }
     providerCache[providerProps.id] = provider;
