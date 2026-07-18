@@ -6,6 +6,7 @@ import AzureAI, { AzureAIProps } from "./AzureAI";
 import Tencent, { TencentProps } from "./Tencent";
 import Volcengine, { VolcengineProps } from "./Volcengine";
 import DeepL, { DeepLProps } from "./DeepL";
+import CloudflareAI, { CloudflareAIProps } from "./CloudflareAI";
 import { ProviderTypeValue } from "./constants";
 
 type ProviderProps =
@@ -16,7 +17,8 @@ type ProviderProps =
   | AzureAIProps
   | TencentProps
   | VolcengineProps
-  | DeepLProps;
+  | DeepLProps
+  | CloudflareAIProps;
 
 type Provider =
   | BaseProvider<ProviderProps>
@@ -26,7 +28,8 @@ type Provider =
   | AzureAI
   | Tencent
   | Volcengine
-  | DeepL;
+  | DeepL
+  | CloudflareAI;
 
 const providerCache = new Map<string, BaseProvider<ProviderProps>>();
 
@@ -61,6 +64,9 @@ export default {
         break;
       case ProviderTypeValue.deepl:
         provider = new DeepL(providerProps as DeepLProps);
+        break;
+      case ProviderTypeValue.cloudflareai:
+        provider = new CloudflareAI(providerProps as CloudflareAIProps);
         break;
     }
     providerCache[providerProps.id] = provider;
