@@ -49,7 +49,7 @@ const DEFAULT_PROPS: BaseProviderProps = {
   concurrencyInterval: 100,
   timeoutS: 30,
   placeholderSting: "{ }",
-  placeholderTag: "a",
+  placeholderTag: "i",
   placeholderTagFormatType: PlaceholderTagFormatTypeValue.compact,
 };
 
