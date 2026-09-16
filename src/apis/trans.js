@@ -2098,7 +2098,7 @@ export async function* handleTranslate(
       });
       return;
     } catch (err) {
-      if (err?.name === "AbortError") {
+      if (err?.name === "AbortError" || err?.name === "AiResponseParseError") {
         throw err;
       }
       kissLog("translate stream failed, fallback to non-stream", err);

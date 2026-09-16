@@ -212,13 +212,13 @@ export const parseCompleteTranslationSegments = (
         decodeText,
       });
       if (jsonSegments.length === 0) {
-        throw new Error("Failed to parse JSON segments");
+        throw new AiResponseParseError("Failed to parse JSON segments");
       }
       return jsonSegments;
     case "xml":
       const xmlSegments = parseXmlTranslationSegments(content);
       if (xmlSegments.length === 0) {
-        throw new Error("Failed to parse XML segments");
+        throw new AiResponseParseError("Failed to parse XML segments");
       }
       return xmlSegments;
     case "line":
@@ -226,7 +226,7 @@ export const parseCompleteTranslationSegments = (
         decodeText,
       });
       if (lineSegments.length === 0) {
-        throw new Error("Failed to parse LINE segments");
+        throw new AiResponseParseError("Failed to parse LINE segments");
       }
       return lineSegments;
   }
@@ -240,3 +240,10 @@ export const parseCompleteTranslationSegments = (
 
   return parseLineTranslationSegments(content, { decodeText });
 };
+
+export class AiResponseParseError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "AiResponseParseError";
+  }
+}
