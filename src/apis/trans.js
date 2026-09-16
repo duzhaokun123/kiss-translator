@@ -232,10 +232,10 @@ const buildSubtitleUserPrompt = ({ formattedEvents }) =>
  * 完美解决大模型在翻译时常混杂的 Markdown、未闭合 JSON、XML、数字列表及无规换行文本的纠错与规避问题。
  * @param {string} raw 大模型返回的原始字符串内容
  * @param {boolean} useBatchFetch 是否为批量翻译模式
- * @param {string} batchSegmentFormat 批量翻译分片格式，可选值：auto、json、xml、line
+ * @param {string} batchSegmentFormat 批量翻译分片格式，可选值：legacy、json、xml、line
  * @returns {Array<[string, string]>} 解析后的双元组列表 [译文, 源语言检测结果]
  */
-const parseAIRes = (raw, useBatchFetch = true, batchSegmentFormat = "auto") => {
+const parseAIRes = (raw, useBatchFetch = true, batchSegmentFormat = "legacy") => {
   if (!raw) {
     return [];
   }
@@ -260,6 +260,8 @@ const parseAIRes = (raw, useBatchFetch = true, batchSegmentFormat = "auto") => {
   }
 
   // 兜底策略：纯文本按行切割解析
+  // 使用非 legacy 格式时 structuredSegments 要么非空要么提前 throw 不会进入兜底
+  // legacy 格式依赖兜底行为
   return content.split("\n").map((line) => {
     const text = decodeHTMLEntities(line.replace(/<br\s*\/?>/gi, "\n").trim());
     return [text, ""];

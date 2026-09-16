@@ -1300,11 +1300,11 @@ function ApiFields({ apiSlug, deleteApi, copyApi, onCollapse, onDirtyChange }) {
                 onChange={handlePromptChange}
                 helperText={i18n(
                   "batch_format_helper",
-                  "不建议同时使用流式传输和聚合翻译时不使用自动格式"
+                  "不建议同时使用流式传输和聚合翻译时不使用遗留格式"
                 )}
               >
-                <MenuItem value="auto">
-                  {i18n("batch_format_auto", "自动")}
+                <MenuItem value="legacy">
+                  {i18n("batch_format_legacy", "遗留")}
                 </MenuItem>
                 <MenuItem value="json">
                   {i18n("batch_format_json", "JSON")}

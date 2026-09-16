@@ -198,7 +198,7 @@ export const parseLineTranslationSegments = (
  * @param {string} content 完整模型输出
  * @param {Object} options 解析选项
  * @param {Function} options.decodeText 译文文本解码函数
- * @param {string} options.segmentFormat 分段格式，可选值：auto、json、xml、line
+ * @param {string} options.segmentFormat 分段格式，可选值：legacy、json、xml、line
  * @returns {Array<{id: number, translation: [string, string]}>} 解析出的段落列表
  */
 export const parseCompleteTranslationSegments = (
